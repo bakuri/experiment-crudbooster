@@ -1,22 +1,25 @@
 version: "3"
 services:
     www:
-        build: ./php
+        build: ./.docker/php
         container_name: crudbooster-www
         ports: 
             - "8090:80"
         volumes:
-            - ../src:/var/www/html/
+            - ./src:/var/www/html/
         links:
             - db
         networks:
             - default
     db:
-        build: ./mysql
+        build: ./.docker/mysql
         container_name: crudbooster-db
         ports: 
             - "33062:3306"
         environment:
+            MYSQL_DATABASE: booster_experiment
+            MYSQL_USER: booster
+            MYSQL_PASSWORD: k7CRT46GaGPCvTy
             MYSQL_ROOT_PASSWORD: password 
         volumes:
             - persistent:/var/lib/mysql
@@ -30,6 +33,8 @@ services:
         ports:
             - 8091:80
         environment:
+            MYSQL_USER: booster
+            MYSQL_PASSWORD: k7CRT46GaGPCvTy
             MYSQL_ROOT_PASSWORD: password
             PMA_HOST: db
 volumes:
